@@ -1,0 +1,9 @@
+.claude/
+
+# Original unoptimized media (optimized versions in media/optimized/ are used)
+media/*.png
+media/*.jpg
+media/*.JPG
+media/*.jpeg
+media/*.mp4
+media/*.bk2
