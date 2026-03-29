@@ -293,6 +293,18 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight' && lbIndex < lbItems.length - 1) { lbIndex++; showLightboxItem(); }
 });
 
+// Swipe support
+let lbTouchX = null;
+lightbox.addEventListener('touchstart', (e) => { lbTouchX = e.touches[0].clientX; }, { passive: true });
+lightbox.addEventListener('touchend', (e) => {
+  if (lbTouchX === null) return;
+  const dx = e.changedTouches[0].clientX - lbTouchX;
+  lbTouchX = null;
+  if (Math.abs(dx) < 40) return;
+  if (dx < 0 && lbIndex < lbItems.length - 1) { lbIndex++; showLightboxItem(); }
+  if (dx > 0 && lbIndex > 0) { lbIndex--; showLightboxItem(); }
+}, { passive: true });
+
 // ===== Tilt effect on project cards =====
 document.querySelectorAll('.project-card-inner').forEach(card => {
   card.addEventListener('mousemove', (e) => {
