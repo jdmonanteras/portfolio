@@ -4,12 +4,53 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jonas Monanteras | Immersive Producer & Developer</title>
-  <link rel="stylesheet" href="styles.css?v=14">
+  <link rel="stylesheet" href="styles.css?v=15">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- Login Screen -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <h1 class="login-title">JDM</h1>
+      <p class="login-subtitle">Enter password to continue</p>
+      <form id="loginForm" autocomplete="off">
+        <input type="password" id="loginPassword" class="login-input" placeholder="Password" autofocus>
+        <button type="submit" class="login-btn">Enter</button>
+      </form>
+      <p class="login-error" id="loginError">Incorrect password</p>
+    </div>
+  </div>
+  <script>
+    (function() {
+      var HASH = 'cf6d343f652309bab400c4bab70329d352512831d4aa0f4b8ea5474dddb1f8e0';
+      var screen = document.getElementById('loginScreen');
+      if (sessionStorage.getItem('portfolio_auth') === '1') {
+        screen.style.display = 'none';
+        document.body.classList.add('unlocked');
+      }
+      async function sha256(str) {
+        var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+        return Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+      }
+      document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        var hash = await sha256(document.getElementById('loginPassword').value);
+        if (hash === HASH) {
+          sessionStorage.setItem('portfolio_auth', '1');
+          screen.style.transition = 'opacity 0.4s ease';
+          screen.style.opacity = '0';
+          document.body.classList.add('unlocked');
+          setTimeout(function() { screen.style.display = 'none'; }, 400);
+        } else {
+          document.getElementById('loginError').classList.add('visible');
+          document.getElementById('loginPassword').value = '';
+        }
+      });
+    })();
+  </script>
+
   <!-- Cursor glow effect -->
   <div class="cursor-glow" id="cursorGlow"></div>
 
