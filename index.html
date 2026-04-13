@@ -25,8 +25,9 @@
   <script>
     (function() {
       var HASH = 'cf6d343f652309bab400c4bab70329d352512831d4aa0f4b8ea5474dddb1f8e0';
+      var LOGIN_ENABLED = false; // Set to true to re-enable login screen
       var screen = document.getElementById('loginScreen');
-      if (sessionStorage.getItem('portfolio_auth') === '1') {
+      if (!LOGIN_ENABLED || sessionStorage.getItem('portfolio_auth') === '1') {
         screen.style.display = 'none';
         document.body.classList.add('unlocked');
       }
